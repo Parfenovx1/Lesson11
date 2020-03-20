@@ -1,49 +1,54 @@
-class Animal{
-  constructor(sex, age){
-    this.sex = sex;
-    this.age = age
-  }
-  jump(){
-    if(this.age < 5)
-    {
-      console.log("I'm jumping!")
-    }
-  }
-  run(){
-    if(this.age > 5)
+function Animal(sex, age){
+  this.sex = sex;
+  this.age = age;
+}
+
+Animal.prototype.run = function(){
+  if(this.age > 5)
     {
       console.log("I'm running!")
     }
-  }
 }
 
-class Mammal extends Animal {
-  constructor(sex, age, height){
-    super(sex, age);
-    this.height = height;
-  }
-  givesMilk(){
-    if(this.sex == "female"){
-      console.log("I'm giving milk!")
-    }else{
-      console.log("I'm not giving milk!")
+Animal.prototype.jump = function(){
+  if(this.age < 5)
+    {
+      console.log("I'm jumping!")
     }
-  }
 }
 
-class Raccoon extends Mammal {
-  constructor(sex, age, height, name){
-    super(sex, age, height);
-    this.name = name;
-  }
-  steal(){
-    console.log("I'm stealing!")
-  }
+function Mammal(sex, age, height){
+  Animal.call(this, sex, age)
+  this.height = height;
 }
 
-var output = new Raccoon("female", 10, 50, "Jora");
+Mammal.prototype = Object.create(Animal.prototype)
+
+Mammal.prototype.givesMilk = function(){
+  if(this.sex == "female"){
+    console.log("I'm giving milk!")
+  }else{
+    console.log("I'm not giving milk!")
+  }
+} ;
+
+function Raccoon(sex, age, height, name){
+  Mammal.call(this, sex, age, height)
+  this.name = name;
+}
+
+Raccoon.prototype = Object.create(Mammal.prototype)
+
+Raccoon.prototype.steal = function(){
+  console.log("I'm stealing!")
+} ;
+var output = new Mammal("male", 4, 50, "Jora")
 console.log(output);
-console.log(output.run());
-console.log(output.jump());
 console.log(output.givesMilk());
-console.log(output.steal());
+console.log(output.jump());
+var output1 = new Raccoon("female", 10, 50, "Jora");
+console.log(output1);
+console.log(output1.run());
+console.log(output1.jump());
+console.log(output1.givesMilk());
+console.log(output1.steal());
